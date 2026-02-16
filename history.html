@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat - CashReward</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0b0f1a; --card: #151c2c; --primary: #4a8d88; --text-dim: #94a3b8; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; }
+
+        .header { padding: 20px 5%; display: flex; align-items: center; gap: 15px; background: var(--card); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 1000; }
+        .header a { color: white; text-decoration: none; width: 35px; height: 35px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; border-radius: 10px; }
+        .header h2 { margin: 0; font-size: 16px; font-weight: 800; }
+
+        /* TAB STYLE */
+        .tabs { display: flex; padding: 15px 5%; gap: 10px; background: var(--card); border-bottom: 1px solid rgba(255,255,255,0.03); overflow-x: auto; white-space: nowrap; }
+        .tab-btn { flex: 1; min-width: 100px; padding: 12px; border-radius: 12px; border: 1px solid #2d3748; background: none; color: var(--text-dim); font-weight: 700; font-size: 12px; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .container { padding: 20px 5%; min-height: 300px; }
+        .history-card { background: var(--card); padding: 18px; border-radius: 20px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; align-items: center; }
+        
+        /* STATUS COLORS */
+        .status { padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+        .pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .success { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+        .rejected { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="dashboard.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <h2>RIWAYAT SAYA</h2>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" id="btnWD" onclick="switchTab('withdrawals', 'btnWD')">Penarikan</button>
+        <button class="tab-btn" id="btnTask" onclick="switchTab('task_submissions', 'btnTask')">Tugas</button>
+        <button class="tab-btn" id="btnDepo" onclick="switchTab('deposits', 'btnDepo')">Deposit</button>
+    </div>
+
+    <div class="container" id="historyList">
+        <p style="text-align:center; color:var(--text-dim); margin-top:50px;">Memuat data...</p>
+    </div>
+    
+    <footer style="margin-top: 10px; padding: 40px 6%; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+        <div style="background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px; text-align: left;">
+            <h4 style="margin: 0 0 12px 0; font-size: 13px; color: var(--primary); letter-spacing: 1px;">
+                <i class="fa-solid fa-circle-question"></i> BUTUH BANTUAN?
+            </h4>
+            <p style="margin: 0; font-size: 11px; color: var(--text-dim); line-height: 1.6;">
+                Jika transaksi Anda berstatus <span style="color: #ffd700;">Pending</span> lebih dari 24 jam, silakan hubungi Customer Service.
+            </p>
+            <a href="https://wa.me/628881593773" style="display: inline-block; margin-top: 15px; color: var(--primary); font-size: 12px; font-weight: 800; text-decoration: none;">
+                HUBUNGI CS <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+            </a>
+        </div>
+        <p style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px;">CashReward System v1.1</p>
+    </footer>
+
+    <script type="module">
+        import { db, auth } from './js/firebase-config.js';
+        import { collection, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Fungsi Ganti Tab
+        window.switchTab = (type, btnId) => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(btnId).classList.add('active');
+            loadHistory(type);
+        }
+
+        let currentUnsubscribe = null;
+
+        function loadHistory(col) {
+            const user = auth.currentUser;
+            if(!user) return;
+
+            if (currentUnsubscribe) currentUnsubscribe();
+
+            const list = document.getElementById('historyList');
+            list.innerHTML = "<center style='margin-top:50px; color:var(--text-dim)'>Memuat...</center>";
+
+            // Query Data berdasarkan UID dan Timestamp
+            const q = query(
+                collection(db, col), 
+                where("uid", "==", user.uid), 
+                orderBy("timestamp", "desc")
+            );
+            
+            currentUnsubscribe = onSnapshot(q, (snap) => {
+                list.innerHTML = "";
+                if(snap.empty) {
+                    list.innerHTML = '<p style="text-align:center; color:var(--text-dim); margin-top:50px;">Belum ada riwayat di kategori ini.</p>';
+                    return;
+                }
+
+                snap.forEach(d => {
+                    const item = d.data();
+                    let title = item.taskTitle || item.method || (col === 'deposits' ? 'Deposit Saldo' : 'Transaksi');
+                    let amount = item.reward || item.amount || 0;
+                    let status = item.status || "pending";
+                    
+                    list.innerHTML += `
+                        <div class="history-card">
+                            <div>
+                                <b style="display:block; font-size:14px; margin-bottom:3px;">${title}</b>
+                                <small style="color:var(--primary); font-weight:700;">Rp ${amount.toLocaleString()}</small>
+                            </div>
+                            <span class="status ${status}">${status}</span>
+                        </div>`;
+                });
+            }, (error) => {
+                console.error(error);
+                list.innerHTML = `<p style="color:#ef4444; font-size:11px; text-align:center; padding:20px;">Gagal memuat. Pastikan 'Index' sudah dibuat di Firebase Console.</p>`;
+            });
+        }
+
+        auth.onAuthStateChanged(u => u ? loadHistory('withdrawals') : window.location.href="login.html");
+    </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - CashReward</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #4a8d88; --bg: #0f172a; --card: #1e293b; --text-dim: #94a3b8; }
+        body { 
+            margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); color: white; min-height: 100vh;
+            background-image: radial-gradient(circle at bottom right, rgba(74, 141, 136, 0.1), transparent);
+        }
+        
+        nav { padding: 25px 5%; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 10; }
+        .logo-text { font-weight: 900; font-size: 22px; color: var(--primary); text-decoration: none; letter-spacing: -1px; }
+        .logo-text span { color: white; }
+
+        .auth-container { 
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; 
+            padding: 120px 20px 60px; box-sizing: border-box;
+        }
+        
+        .auth-card { 
+            background: var(--card); width: 100%; max-width: 400px; padding: 45px 30px; 
+            border-radius: 35px; border: 1px solid rgba(255,255,255,0.05); text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        /* Banner Bonus Premium */
+        .promo-banner {
+            background: rgba(74, 141, 136, 0.1); border: 1px solid rgba(74, 141, 136, 0.2);
+            padding: 12px 15px; border-radius: 16px; margin: 20px 0 30px;
+            display: flex; align-items: center; gap: 12px; text-align: left; position: relative; overflow: hidden;
+        }
+        .promo-banner::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine { 100% { left: 100%; } }
+
+        .promo-icon {
+            width: 35px; height: 35px; background: var(--primary); color: white;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 16px; flex-shrink: 0; box-shadow: 0 5px 15px rgba(74, 141, 136, 0.3);
+        }
+        .promo-info p { margin: 0; font-size: 11px; color: var(--text-dim); font-weight: 600; }
+        .promo-info h4 { margin: 0; font-size: 15px; font-weight: 800; color: white; }
+        .promo-info h4 span { color: #22c55e; }
+
+        /* Input Styles */
+        .input-group { margin-bottom: 18px; text-align: left; }
+        .input-group label { display: block; font-size: 10px; color: #64748b; margin-bottom: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 14px; }
+        .input-wrapper input { 
+            width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.05); 
+            padding: 14px 14px 14px 45px; border-radius: 15px; color: white; box-sizing: border-box; outline: none; 
+            font-size: 14px; transition: 0.3s;
+        }
+        .input-wrapper input:focus { border-color: var(--primary); background: rgba(74, 141, 136, 0.05); }
+        .input-wrapper input:read-only { background: rgba(74, 141, 136, 0.1); color: var(--primary); font-weight: 800; border: 1px dashed var(--primary); }
+        
+        .btn-auth { 
+            width: 100%; background: var(--primary); color: white; padding: 18px; 
+            border: none; border-radius: 18px; font-weight: 800; cursor: pointer; transition: 0.4s;
+            margin-top: 10px; font-size: 14px; letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(74, 141, 136, 0.2);
+        }
+
+        /* --- STYLES FOOTER AWAL (RESTORED) --- */
+        .footer-compact { width: 100%; padding: 40px 8% 30px; text-align: center; box-sizing: border-box; background: rgba(0,0,0,0.2); }
+        .footer-main-core { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .brand-row { display: flex; align-items: center; gap: 12px; }
+        .nano-logo { width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+        .brand-info h4 { margin: 0; font-size: 14px; color: #fff; letter-spacing: 0.5px; }
+        .brand-info h4 span { font-weight: 400; color: var(--text-dim); margin-left: 4px; }
+        .server-status-mini { font-size: 8px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 5px; margin-top: 3px; justify-content: center; }
+        .live-dot { width: 4px; height: 4px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; }
+        .copyright-mini { font-size: 10px; color: rgba(255,255,255,0.15); margin: 5px 0 0 0; font-family: monospace; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo-text">Cash<span>Reward</span></a>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Buat Akun</h2>
+            <p>Mulai perjalanan cuan Anda hari ini.</p>
+
+            <div class="promo-banner">
+                <div class="promo-icon"><i class="fa-solid fa-gift"></i></div>
+                <div class="promo-info">
+                    <p>REWARD AKTIVASI</p>
+                    <h4>Bonus <span>Rp5.000</span> Tersedia</h4>
+                </div>
+            </div>
+  
+            <form id="registerForm">
+                <div class="input-group">
+                    <label>Nama Lengkap</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="name" placeholder="Nama lengkap anda" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="email" placeholder="email@anda.com" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" placeholder="Min. 6 Karakter" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Kode Referral</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user-group"></i>
+                        <input type="text" id="referralInput" placeholder="Optional">
+                    </div>
+                </div>
+                <button type="submit" class="btn-auth">KLAIM BONUS & DAFTAR</button>
+            </form>
+            
+            <div style="margin-top: 30px; font-size: 13px; color: var(--text-dim); font-weight: 600;">
+                Sudah punya akun? <a href="login.html" style="color: var(--primary); text-decoration: none; font-weight: 800;">Login Disini</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-compact">
+        <div class="footer-main-core">
+            <div class="brand-row">
+                <img src="img/logo.jpg" class="nano-logo">
+                <div class="brand-info">
+                    <h4>CashReward<span>Network</span></h4>
+                    <div class="server-status-mini">
+                        <span class="live-dot"></span> SECURE CONNECTION ACTIVE
+                    </div>
+                </div>
+            </div>
+            <p class="copyright-mini">© 2025-2026 Secured System | Node: RS-ID-01</p>
+        </div>
+        <div style="height: 10px;"></div>
+    </footer>
+
+    <script type="module">
+    // Menggunakan library langsung dari CDN agar stabil
+    import { db, auth } from './js/firebase-config.js';
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    // REVISI: Tambahkan updateDoc dan increment untuk reward
+    import { doc, setDoc, getDocs, collection, query, where, serverTimestamp, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // 1. Ambil kode referral dari URL secara otomatis
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get('ref');
+    const referralInput = document.getElementById('referralInput');
+
+    if(refCode && referralInput) {
+        referralInput.value = refCode;
+        referralInput.readOnly = true; 
+    }
+
+    // --- FUNGSI IDENTIFIKASI PERANGKAT (ANTI-TUYUL) ---
+    const getDeviceId = () => {
+        let id = localStorage.getItem('rs_device_token');
+        if (!id) {
+            id = 'DV-' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+            localStorage.setItem('rs_device_token', id);
+        }
+        return id;
+    };
+
+    // 2. Proses Pendaftaran
+    document.getElementById('registerForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const referral = referralInput.value || "None";
+        
+        const deviceId = getDeviceId();
+
+        btn.innerText = "MENGECEK PERANGKAT..."; btn.disabled = true;
+
+        try {
+            // --- PROTEKSI 1 DEVICE 1 AKUN ---
+            const q = query(collection(db, "users"), where("deviceId", "==", deviceId));
+            const checkDevice = await getDocs(q);
+
+            if (!checkDevice.empty) {
+                alert("MAAF! Satu perangkat hanya diperbolehkan memiliki satu akun.");
+                btn.innerText = "KLAIM BONUS & DAFTAR"; 
+                btn.disabled = false;
+                return; 
+            }
+
+            // Buat akun di Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Simpan data profil
+            await setDoc(doc(db, "users", user.uid), {
+                uid: user.uid,
+                name: name,
+                email: email,
+                balance: 5000, 
+                totalEarned: 0,
+                referralCode: "CRW-" + Math.random().toString(36).substring(2, 7).toUpperCase(),
+                referredBy: referral,
+                deviceId: deviceId, 
+                status: "active",
+                isAdmin: false,
+                timestamp: serverTimestamp()
+            });
+
+            // --- REVISI: LOGIKA PENAMBAHAN SALDO REWARD ---
+            if (referral !== "None") {
+                const qRef = query(collection(db, "users"), where("referralCode", "==", referral));
+                const refSnap = await getDocs(qRef);
+                
+                if (!refSnap.empty) {
+                    const uplineDoc = refSnap.docs[0];
+                    // Tambah saldo pengajak Rp 1.000 dan update statistik
+                    await updateDoc(doc(db, "users", uplineDoc.id), {
+                        balance: increment(1000),
+                        totalEarned: increment(1000)
+                    });
+                }
+            }
+
+            alert("Pendaftaran Berhasil!");
+            window.location.href = "dashboard.html";
+
+        } catch (err) {
+            console.error(err);
+            alert("Pendaftaran Gagal: " + err.message);
+            btn.innerText = "KLAIM BONUS & DAFTAR"; btn.disabled = false;
+        }
+    };
+        </script>
+</body>
+
+</html>
+

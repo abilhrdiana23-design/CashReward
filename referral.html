@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undang Teman - CashReward</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0b0f1a; --card: #151c2c; --primary: #4a8d88; --text-dim: #94a3b8; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; padding-bottom: 120px; }
+        .header { padding: 20px 5%; display: flex; align-items: center; gap: 15px; background: var(--card); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .header a { color: white; text-decoration: none; }
+        .hero-ref { padding: 40px 5%; text-align: center; background: linear-gradient(180deg, var(--card) 0%, var(--bg) 100%); }
+        .hero-ref i { font-size: 60px; color: var(--primary); margin-bottom: 20px; }
+        .hero-ref h1 { margin: 0; font-size: 24px; font-weight: 800; }
+        .hero-ref p { color: #94a3b8; font-size: 13px; margin-top: 10px; line-height: 1.6; }
+        .ref-box { margin: 0 5%; background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .ref-box small { color: var(--primary); font-weight: 800; font-size: 11px; letter-spacing: 1px; }
+        .ref-code-display { font-size: 28px; font-weight: 800; margin: 15px 0; color: white; letter-spacing: 2px; }
+        .share-link-box { background: #0b1425; padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; margin-top: 10px; border: 1px solid #2d3748; }
+        .share-link-box input { background: none; border: none; color: #94a3b8; font-size: 12px; flex: 1; outline: none; width: 100%; }
+        .copy-btn { color: var(--primary); cursor: pointer; padding: 5px; }
+        .stats-ref { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 5%; }
+        .s-item { background: var(--card); padding: 20px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 12px; }
+        .s-icon { width: 40px; height: 40px; background: rgba(74, 141, 136, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 18px; }
+        .s-label { display: block; font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+        .s-value { font-size: 16px; color: white; font-weight: 800; }
+        .btn-wa { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 5%; background: #25d366; color: white; text-decoration: none; padding: 18px; border-radius: 15px; text-align: center; font-weight: 800; font-size: 14px; cursor: pointer; border: none; width: 90%; }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(21, 28, 44, 0.98); display: flex; justify-content: space-around; padding: 12px 0 25px; backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.05); z-index: 1000; }
+        .nav-item { text-decoration: none; color: #94a3b8; text-align: center; flex: 1; font-size: 10px; font-weight: 800; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .main-footer { margin-top: 20px; padding: 0 5% 1px; }
+        .footer-card { background: linear-gradient(145deg, #1a2235, #151c2c); border-radius: 24px; padding: 25px; border: 1px solid rgba(255,255,255,0.03); margin-bottom: -11px; }
+        .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .card-head i { color: var(--primary); font-size: 20px; }
+        .card-head h4 { margin: 0; font-size: 14px; letter-spacing: 1px; color: white; }
+        .rule-item { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+        .rule-item i { font-size: 12px; color: var(--primary); }
+        .rule-item p { margin: 0; font-size: 11px; color: #cbd5e1; }
+        .rule-warning { margin-top: 20px; padding: 15px; background: rgba(239, 68, 68, 0.05); border-radius: 12px; border-left: 3px solid #ef4444; display: flex; gap: 10px; }
+        .rule-warning i { color: #ef4444; font-size: 14px; margin-top: 2px; }
+        .rule-warning p { margin: 0; font-size: 10px; color: #fca5a5; line-height: 1.5; }
+        .footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px; }
+        .footer-links { display: flex; justify-content: center; gap: 15px; align-items: center; margin-bottom: 10px; }
+        .footer-links a { text-decoration: none; color: var(--primary); font-size: 11px; font-weight: 600; }
+        .divider { width: 4px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        .footer-logo { width: 40px; border-radius: 12px; margin-bottom: 10px; filter: grayscale(0.5); }
+        .copyright { font-size: 10px; color: var(--text-dim); margin: 0; letter-spacing: 1px; }
+        .server-status { font-size: 8px; font-family: monospace; color: rgba(255,255,255,0.2); margin-top: 8px; }
+        .status-online { color: #22c55e; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="dashboard.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <h2 style="margin:0; font-size:16px;">Undang Teman</h2>
+    </div>
+
+    <div class="hero-ref">
+        <i class="fa-solid fa-gift"></i>
+        <h1>Dapatkan Bonus Rp 1.000</h1>
+        <p>Ajak temanmu bergabung dan dapatkan komisi instan.</p>
+    </div>
+
+    <div class="ref-box">
+        <small>KODE REFERRAL KAMU</small>
+        <div class="ref-code-display" id="myCode">MEMUAT...</div>
+        <div class="share-link-box">
+            <input type="text" id="refLink" readonly value="Loading...">
+            <div class="copy-btn" id="btnCopy" onclick="copyReferral()"><i class="fa-solid fa-copy"></i></div>
+        </div>
+    </div>
+
+    <div class="stats-ref">
+        <div class="s-item">
+            <div class="s-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="s-info">
+                <span class="s-label">Total Join</span>
+                <b id="refCount" class="s-value">0</b>
+            </div>
+        </div>
+        <div class="s-item">
+            <div class="s-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;"><i class="fa-solid fa-wallet"></i></div>
+            <div class="s-info">
+                <span class="s-label">Total Bonus</span>
+                <b id="refEarn" class="s-value">Rp 0</b>
+            </div>
+        </div>
+    </div>
+
+    <button id="btnWA" class="btn-wa">
+        <i class="fa-brands fa-whatsapp"></i> BAGIKAN KE WHATSAPP
+    </button>
+
+    <footer class="main-footer">
+        <div class="footer-card">
+            <div class="card-head">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h4>REFERRAL SAFETY SYSTEM</h4>
+            </div>
+            <div class="card-body">
+                <div class="rule-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <p>Bonus <b>Rp 1.000</b> per pendaftaran valid.</p>
+                </div>
+                <div class="rule-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <p>Bonus <b>Rp 5.000</b> saldo awal pengguna baru.</p>
+                </div>
+                <div class="rule-warning">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <p>Dilarang keras menggunakan bot, emulator, atau self-referral. Pelanggaran berakibat <b>BANNED PERMANEN</b>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="tos.html">Aturan Kerja</a>
+                <span class="divider"></span>
+                <a href="privacy.html">Privasi</a>
+            </div>
+            <div class="branding">
+                <img src="img/logo.jpg" alt="Logo" class="footer-logo">
+                <p class="copyright">© 2025-2026 CashReward Network</p>
+                <p class="server-status">SERVER STATUS: <span class="status-online">ONLINE</span></p>
+            </div>
+        </div>
+        <div style="height: 35px;"></div> 
+    </footer>
+
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>HOME</span></a>
+        <a href="withdraw.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>PENARIKAN</span></a>
+        <a href="referral.html" class="nav-item active"><i class="fa-solid fa-user-plus"></i><span>UNDANG</span></a>
+        <a href="profile.html" class="nav-item"><i class="fa-solid fa-circle-user"></i><span>PROFIL</span></a>
+    </nav>
+
+    <script type="module">
+        import { db, auth } from './js/firebase-config.js';
+        import { doc, getDoc, onSnapshot, collection, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Fungsi inisialisasi data referral
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Ambil data user dari Firestore
+                    const userSnap = await getDoc(doc(db, "users", user.uid));
+                    let code = "";
+                    
+                    if (userSnap.exists()) {
+                        code = userSnap.data().referralCode || user.uid.substring(0, 6).toUpperCase();
+                    } else {
+                        code = user.uid.substring(0, 6).toUpperCase();
+                    }
+
+                    // Buat link pendaftaran lengkap
+                    // Kode ini otomatis mendeteksi URL halaman saat ini dan mengganti 'referral.html' menjadi 'register.html'
+const currentUrl = window.location.href;
+const link = currentUrl.replace('referral.html', 'register.html') + "?ref=" + code;
+
+// Masukkan hasilnya ke kolom input agar user bisa copy
+document.getElementById('refLink').value = link;
+                    // Update UI
+                    document.getElementById('myCode').innerText = code;
+                    document.getElementById('refLink').value = link;
+
+                    // Setup Bagikan ke WhatsApp
+                    document.getElementById('btnWA').onclick = () => {
+                        const pesan = encodeURIComponent(`Buruan join di RewardSharey! \n\nKode Referral: *${code}* \n\nDaftar di sini: ${link}`);
+                        window.open(`https://api.whatsapp.com/send?text=${pesan}`, '_blank');
+                    };
+
+                    // Realtime Statistik Referral
+                    const q = query(collection(db, "users"), where("referredBy", "==", code));
+                    onSnapshot(q, (snap) => {
+                        document.getElementById('refCount').innerText = snap.size;
+                        document.getElementById('refEarn').innerText = "Rp " + (snap.size * 1000).toLocaleString();
+                    });
+
+                } catch (err) {
+                    console.error("Error loading referral data:", err);
+                }
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        // Fungsi Copy Link
+        window.copyReferral = () => {
+            const copyText = document.getElementById("refLink");
+            const textToCopy = copyText.value;
+
+            if (textToCopy === "Loading...") return;
+
+            // Gunakan API Clipboard Modern
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert("Link Referral Berhasil Disalin! 🚀");
+                }).catch(() => fallbackCopy(textToCopy));
+            } else {
+                fallbackCopy(textToCopy);
+            }
+        };
+
+        // Fungsi Salin Cadangan (Legacy)
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert("Link Disalin! 🚀");
+            } catch (err) {
+                alert("Gagal copy, silakan salin manual.");
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+
+</html>

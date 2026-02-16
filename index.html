@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashReward - Official Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a8d88;
+            --primary-dark: #3a6e6a;
+            --bg: #0f172a;
+            --card: #1e293b;
+        }
+
+        body { 
+            margin: 0; font-family: 'Inter', sans-serif; 
+            background: var(--bg); color: white; overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Hero Styling */
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 700px;
+            background: radial-gradient(circle at 50% -20%, #4a8d8844, transparent);
+            z-index: -1;
+        }
+
+        nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 900; font-size: 24px; color: var(--primary); }
+        .logo span { color: white; }
+
+        .hero { padding: 60px 5%; text-align: center; }
+        .badge {
+            background: rgba(74, 141, 136, 0.1); color: var(--primary);
+            padding: 8px 16px; border-radius: 100px; font-size: 11px;
+            font-weight: 700; border: 1px solid rgba(74, 141, 136, 0.3);
+            display: inline-block; margin-bottom: 20px;
+        }
+
+        .hero h1 { font-size: 38px; font-weight: 900; line-height: 1.1; margin: 0; }
+        .hero p { color: #94a3b8; font-size: 15px; max-width: 450px; margin: 20px auto 30px; }
+
+        .cta-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .btn-primary {
+            background: var(--primary); color: white; width: 85%; max-width: 320px;
+            padding: 18px; border-radius: 16px; text-decoration: none;
+            font-weight: 800; font-size: 18px; box-shadow: 0 10px 25px rgba(74, 141, 136, 0.4);
+        }
+
+        /* Stats Grid 3x2 */
+        .stats-section { padding: 40px 5%; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .stat-card {
+            background: var(--card); padding: 20px 10px; border-radius: 18px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-card i { color: var(--primary); font-size: 18px; margin-bottom: 8px; }
+        .stat-card h3 { margin: 0; font-size: 18px; font-weight: 800; }
+        .stat-card p { margin: 5px 0 0; font-size: 9px; color: #64748b; text-transform: uppercase; }
+
+        /* Testimonial Slider */
+        .testimonials { padding: 50px 0; overflow: hidden; background: rgba(255,255,255,0.01); }
+        .testi-track { display: flex; width: calc(280px * 10); animation: scrollTesti 25s linear infinite; gap: 20px; padding-left: 20px; }
+        .testi-card { width: 250px; background: var(--card); padding: 20px; border-radius: 20px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.05); }
+        .testi-card p { font-size: 13px; color: #94a3b8; font-style: italic; margin-bottom: 15px; }
+        .u-info { display: flex; align-items: center; gap: 10px; }
+        .u-info img { width: 35px; border-radius: 50%; }
+        .u-info b { font-size: 12px; display: block; }
+
+        @keyframes scrollTesti {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-280px * 5)); }
+        }
+
+        /* FIXED NOTIF WD (FAKEOUT) */
+        #payoutNotif {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(150px);
+            width: 85%; max-width: 350px; background: white; color: #333;
+            padding: 12px 18px; border-radius: 20px; display: flex; align-items: center;
+            gap: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 9999;
+        }
+        #payoutNotif.show { transform: translateX(-50%) translateY(0); }
+
+        footer { text-align: center; padding: 30px; color: #475569; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg"></div>
+    <nav><div class="logo">Cash<span>Reward</span></div></nav>
+
+    <section class="hero">
+        <div class="badge"> PLATFORM TERVERIFIKASI</div>
+        <h1>Cuan dari rumah,<br><span style="color: var(--primary);">Kenapa Enggak?</span></h1>
+        <p>Gabung 14.000+ member lainnya. Kerjakan tugas ringan, kumpulkan poin, dan cairkan ke E-Wallet favoritmu.</p>
+        
+        <div class="cta-group">
+            <a href="register.html" id="linkDaftar" class="btn-primary">Mulai Sekarang</a>
+            <a href="#stats" style="color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600;">
+                Lihat Statistik <i class="fas fa-arrow-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <div class="stats-section" id="stats">
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-users"></i><h3>14.2K</h3><p>Users</p></div>
+            <div class="stat-card"><i class="fas fa-wallet"></i><h3>50M</h3><p>Paid</p></div>
+            <div class="stat-card"><i class="fas fa-tasks"></i><h3>570K</h3><p>Tasks</p></div>
+            <div class="stat-card"><i class="fas fa-check-circle"></i><h3>100+</h3><p>Brands</p></div>
+            <div class="stat-card"><i class="fas fa-globe"></i><h3>34</h3><p>Cities</p></div>
+            <div class="stat-card"><i class="fas fa-star"></i><h3>4.9</h3><p>Rating</p></div>
+        </div>
+    </div>
+
+    <section class="testimonials">
+        <div class="testi-track">
+            <div class="testi-card"><p>"Beneran cair ke DANA! Gak rugi daftar."</p><div class="u-info"><img src="https://i.pravatar.cc/50?u=1"><div><b>Rehan S.</b><span style="font-size:10px;color:var(--primary)">User</span></div></div></div>
+            <div class="testi-card"><p>"Sambil nunggu kelas kuliah bisa dapet saldo."</p><div class="u-info"><img src="https://i.pravatar.cc/50?u=2"><div><b>Anto W.</b><span style="font-size:10px;color:var(--primary)">User</span></div></div></div>
+            <div class="testi-card"><p>"Refferalnya paling gede bonusnya."</p><div class="u-info"><img src="https://i.pravatar.cc/50?u=3"><div><b>Firman K.</b><span style="font-size:10px;color:var(--primary)">User</span></div></div></div>
+            <div class="testi-card"><p>"Adminnya fast respon kalau nanya."</p><div class="u-info"><img src="https://i.pravatar.cc/50?u=4"><div><b>Putri A.</b><span style="font-size:10px;color:var(--primary)">User</span></div></div></div>
+            <div class="testi-card"><p>"WD cuma butuh beberapa jam aja."</p><div class="u-info"><img src="https://i.pravatar.cc/50?u=5"><div><b>Putra T.</b><span style="font-size:10px;color:var(--primary)">User</span></div></div></div>
+            <div class="testi-card"><p>"Beneran cair ke DANA! Gak rugi daftar."</p><div class="u-info"><img src="https://i.pravatar.cc/50?u=1"><div><b>Kamila F.</b></div></div></div>
+        </div>
+    </section>
+
+    <div id="payoutNotif">
+        <img id="notifImg" src="" style="width:40px; border-radius: 50%;">
+        <div>
+            <p style="margin:0; font-size: 13px; font-weight: 800;" id="notifUser">M. Rizky</p>
+            <p style="margin:0; font-size: 11px; color: #555;" id="notifMsg">Baru saja menarik Rp 50.000 via DANA</p>
+        </div>
+    </div>
+
+    <footer style="margin-top: 0px; padding: 40px 6%; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+    
+    <div style="margin-bottom: 20px;">
+        <img src="img/logo.jpg" alt="Logo" style="width: 50px; height: 50px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--primary);">
+        <div style="font-size: 16px; font-weight: 800; letter-spacing: 2px;">CASH<span style="color: var(--primary);">REWARD</span></div>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 25px;">
+        <a href="tos.html" style="color: var(--primary); font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid var(--primary); padding: 5px 15px; border-radius: 20px;">Syarat & Ketentuan</a>
+        <a href="privacy.html" style="color: var(--primary); font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid var(--primary); padding: 5px 15px; border-radius: 20px;">Kebijakan Privasi</a>
+    </div>
+
+    <p style="font-size: 11px; color: var(--text-dim); line-height: 1.8; max-width: 400px; margin: 0 auto;">
+        © 2025-2026 CashReward Group Technology. All Rights Reserved.<br>
+        Platform Periklanan Digital & Marketplace Berlisensi.<br>
+        <span style="opacity: 0.4;">Server: RS-IND-01 | Encrypted by Google Firebase</span>
+    </p>
+
+    <div style="height: 0px;"></div>
+</footer>
+
+    <script>
+        // 1. Logika Tangkap Referral
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref');
+        if(ref) document.getElementById('linkDaftar').href = "register.html?ref="+ref;
+
+        // 2. Logika Notif WD (Benerin Script)
+        const names = ["Andi", "Septian", "Rian", "Dewi", "Bambang", "Lestari", "Vika", "Putra"];
+        const amounts = ["10.000", "15.000", "25.000", "50.000", "75.000", "100.000"];
+        const wallet = ["DANA", "OVO", "GOPAY"];
+
+        function triggerNotif() {
+            const el = document.getElementById('payoutNotif');
+            document.getElementById('notifUser').innerText = names[Math.floor(Math.random()*names.length)] + " **";
+            document.getElementById('notifMsg').innerText = "Baru saja menarik Rp " + amounts[Math.floor(Math.random()*amounts.length)] + " via " + wallet[Math.floor(Math.random()*wallet.length)];
+            document.getElementById('notifImg').src = "https://i.pravatar.cc/100?u=" + Math.random();
+            
+            el.classList.add('show');
+            setTimeout(() => { el.classList.remove('show'); }, 4000); // Tampil 4 detik
+        }
+
+        // Jalankan notif pertama setelah 5 detik, lalu setiap 15-20 detik
+        setTimeout(triggerNotif, 5000);
+        setInterval(triggerNotif, 18000);
+    </script>
+</body>
+</html>

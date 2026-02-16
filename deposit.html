@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Up - CashReward</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0b0f1a; --card: #151c2c; --primary: #4a8d88; --text-dim: #94a3b8; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; display: flex; flex-direction: column; min-height: 100vh; }
+
+        .header { padding: 20px 5%; display: flex; align-items: center; gap: 15px; background: var(--card); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 1000; }
+        .header a { color: white; text-decoration: none; width: 35px; height: 35px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; border-radius: 10px; }
+        .header h2 { margin: 0; font-size: 16px; font-weight: 800; }
+
+        .content { padding: 25px 6%; flex: 1; }
+
+        /* Card Rekening - Luxury Look */
+        .bank-card { 
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
+            padding: 25px; border-radius: 24px; border: 1px solid rgba(74, 141, 136, 0.4); margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .bank-label { color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+        .bank-name { font-size: 22px; font-weight: 800; margin-bottom: 5px; display: block; }
+        .bank-acc { font-size: 18px; font-weight: 600; letter-spacing: 2px; color: #fff; margin-bottom: 15px; display: block; }
+        .bank-holder { font-size: 13px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
+
+        /* Form Depo */
+        .form-depo { background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.03); }
+        .label { display: block; font-size: 12px; font-weight: 800; color: var(--text-dim); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-box { 
+            width: 100%; padding: 18px; background: #0b0f1a; border: 2px solid #2d3748; 
+            border-radius: 16px; color: white; box-sizing: border-box; outline: none; font-size: 18px; font-weight: 800;
+            font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s;
+        }
+        .input-box:focus { border-color: var(--primary); }
+
+        .btn-wa { 
+            width: 100%; padding: 20px; background: #25d366; border: none; border-radius: 18px; 
+            color: white; font-weight: 800; cursor: pointer; margin-top: 25px; font-size: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
+        }
+
+        /* Footer Info Section */
+        .footer-note { padding: 30px 6% 40px; text-align: center; background: rgba(0,0,0,0.2); }
+        .note-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .note-item { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.02); }
+        .note-item i { font-size: 24px; color: var(--primary); margin-bottom: 12px; display: block; }
+        .note-item h5 { margin: 0; font-size: 12px; font-weight: 800; }
+        .note-item p { margin: 6px 0 0; font-size: 10px; color: var(--text-dim); line-height: 1.5; }
+
+        .help-center { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; }
+        .help-center span { font-size: 12px; color: var(--text-dim); }
+        .help-center b { display: block; font-size: 13px; color: var(--primary); margin-top: 8px; font-weight: 800; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="dashboard.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <h2>TOP UP SALDO</h2>
+    </div>
+
+    <div class="content">
+        <div class="bank-card">
+            <span class="bank-label">TUJUAN TRANSFER</span>
+            <span class="bank-name">SEABANK</span>
+            <span class="bank-acc" id="noRek">901700242288</span>
+            <span class="bank-holder">A/H Axxxx Hxxxxxxx</span>
+            <button onclick="copyRek()" style="display:block; margin-top:20px; background: var(--primary); border:none; color:white; padding:8px 16px; border-radius:10px; font-size:11px; font-weight:800; cursor:pointer;">
+                <i class="fa-solid fa-copy"></i> SALIN REKENING
+            </button>
+        </div>
+
+        <div class="form-depo">
+            <label class="label">NOMINAL DEPOSIT (Rp)</label>
+            <div style="margin-top: -5px; margin-bottom: 10px; text-align: left;">
+        <span style="font-size: 11px; color: var(--primary); font-weight: 600; opacity: 0.8;">
+            <i class="fa-solid fa-circle-info"></i> Minimal deposit Rp 20.000
+        </span>
+    </div>
+            <input type="number" id="depoAmount" class="input-box" placeholder="0">
+            
+            <button class="btn-wa" onclick="sendWA()">
+                KONFIRMASI VIA WHATSAPP
+            </button>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <div class="note-grid">
+            <div class="note-item">
+                <i class="fa-solid fa-bolt-lightning"></i>
+                <h5>Proses Instan</h5>
+                <p>Verifikasi cepat dan saldo langsung bertambah.</p>
+            </div>
+            <div class="note-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h5>Aman & Resmi</h5>
+                <p>Sistem pembayaran terjamin dan terenkripsi.</p>
+            </div>
+        </div>
+
+        <div class="help-center">
+            <span>Butuh Bantuan Transfer?</span>
+            <b>Customer Service: 0888 1593 773</b>
+        </div>
+    </div>
+
+    <script>
+    // Fungsi Copy tetap di luar module agar bisa dipanggil HTML
+    function copyRek() {
+        navigator.clipboard.writeText("901700242288");
+        alert("Nomor Rekening Seabank disalin ke clipboard!");
+    }
+</script>
+
+<script type="module">
+    // Kita pakai type="module" agar import dari Firebase jalan
+    import { db, auth } from './js/firebase-config.js';
+    import { addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    window.sendWA = async () => {
+        const amtInput = document.getElementById('depoAmount').value;
+        const amt = parseInt(amtInput);
+
+        // 1. PAGAR MINIMAL DEPOSIT 20.000 (Sesuai Request Boss)
+        if(!amt || amt < 20000) {
+            return alert("Minimal deposit adalah Rp 20.000");
+        }
+
+        // Cek apakah user sudah login
+        if(!auth.currentUser) {
+            return alert("Silakan login terlebih dahulu!");
+        }
+
+        try {
+            // 2. Catat ke Database untuk Admin Panel
+            await addDoc(collection(db, "deposits"), {
+                uid: auth.currentUser.uid,
+                email: auth.currentUser.email,
+                amount: amt,
+                method: "SEABANK",
+                status: "pending", 
+                timestamp: serverTimestamp()
+            });
+
+            // 3. Redirect ke WhatsApp untuk kirim bukti
+            const waNumber = "628881593773";
+            const text = encodeURIComponent(
+                `*KONFIRMASI DEPOSIT - CASHREWARD*\n\n` +
+                `Halo Admin, saya telah membuat request deposit.\n\n` +
+                `• *Email:* ${auth.currentUser.email}\n` +
+                `• *Nominal:* Rp ${amt.toLocaleString()}\n` +
+                `• *Metode:* DANA\n\n` +
+                `*SAYA AKAN MENGIRIMKAN BUKTI SCREENSHOT SETELAH INI.*`
+            );
+            
+            alert("Request dibuat! Sekarang silakan kirim bukti transfer ke WhatsApp Admin.");
+            window.open(`https://wa.me/${waNumber}?text=${text}`, '_blank');
+
+        } catch (e) {
+            alert("Gagal membuat request: " + e.message);
+        }
+    }
+</script>
+</body>
+</html>

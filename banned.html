@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akun Ditangguhkan - CashReward</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #0b0f1a; 
+            --card: #151c2c; 
+            --danger: #ff4757; 
+            --danger-glow: rgba(255, 71, 87, 0.3);
+            --text-dim: #94a3b8; 
+            --primary: #4a8d88;
+        }
+        
+        body { 
+            margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); color: white; 
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* Background Glow Ambient */
+        .ambient-red {
+            position: fixed; width: 400px; height: 400px;
+            background: var(--danger); filter: blur(180px);
+            opacity: 0.08; z-index: -1; top: 40%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .main-content {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 40px 8%; width: 100%; box-sizing: border-box;
+        }
+
+        .banned-card {
+            background: rgba(21, 28, 44, 0.6);
+            backdrop-filter: blur(15px);
+            padding: 50px 30px 40px; 
+            border-radius: 40px;
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            max-width: 400px; width: 100%;
+            position: relative;
+            animation: cardEntrance 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Badge Atas */
+        .security-badge {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--danger); color: white; font-size: 9px;
+            font-weight: 800; padding: 6px 16px; border-radius: 50px;
+            letter-spacing: 1.5px; white-space: nowrap;
+            box-shadow: 0 5px 15px var(--danger-glow);
+        }
+
+        .icon-sphere {
+            width: 100px; height: 100px; background: rgba(255, 71, 87, 0.05);
+            color: var(--danger); border-radius: 35px; display: flex;
+            align-items: center; justify-content: center; font-size: 48px;
+            margin: 0 auto 30px; border: 1px solid rgba(255, 71, 87, 0.15);
+            animation: pulseFloat 4s ease-in-out infinite;
+        }
+
+        h1 { font-size: 26px; font-weight: 800; margin: 0 0 15px; letter-spacing: -1px; color: #fff; }
+        
+        .alert-box {
+            background: rgba(255, 71, 87, 0.05); padding: 18px; border-radius: 20px;
+            margin-bottom: 30px; border: 1px solid rgba(255, 71, 87, 0.1);
+        }
+
+        .alert-box p { font-size: 13px; color: #fca5a5; line-height: 1.6; margin: 0; font-weight: 500; }
+
+        .btn-appeal {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            background: #fff; color: #000;
+            padding: 18px; border-radius: 20px; text-decoration: none;
+            font-weight: 800; font-size: 14px; transition: all 0.3s ease;
+        }
+
+        .btn-appeal:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+            background: var(--danger); color: #fff;
+        }
+
+        /* --- FOOTER SECTION --- */
+        .footer-compact {
+            width: 100%; padding: 40px 8% 30px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+            text-align: center; box-sizing: border-box;
+        }
+
+        .footer-main-core {
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+        }
+
+        .brand-row {
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .nano-logo {
+            width: 32px; height: 32px; border-radius: 8px; filter: grayscale(1) brightness(1.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .brand-info h4 { margin: 0; font-size: 14px; color: #fff; letter-spacing: 0.5px; }
+        .brand-info h4 span { font-weight: 400; color: var(--text-dim); margin-left: 4px; }
+
+        .server-status-mini {
+            font-size: 8px; font-weight: 800; color: #475569;
+            display: flex; align-items: center; gap: 5px; margin-top: 3px; justify-content: center;
+        }
+
+        .live-dot {
+            width: 4px; height: 4px; background: #22c55e; border-radius: 50%;
+            box-shadow: 0 0 8px #22c55e;
+        }
+
+        .copyright-mini {
+            font-size: 10px; color: rgba(255,255,255,0.15); margin: 5px 0 0 0;
+            font-family: monospace; letter-spacing: 1px;
+        }
+
+        /* --- ANIMASI --- */
+        @keyframes pulseFloat {
+            0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 0 0 rgba(255,71,87,0); }
+            50% { transform: translateY(-15px) scale(1.05); box-shadow: 0 20px 40px rgba(255,71,87,0.1); }
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-red"></div>
+
+    <div class="main-content">
+        <div class="banned-card">
+            <div class="security-badge">TERMINATED BY SYSTEM</div>
+            
+            <div class="icon-sphere">
+                <i class="fa-solid fa-user-lock"></i>
+            </div>
+            
+            <h1>Akses Dibatasi</h1>
+            
+            <div class="alert-box">
+                <p>Maaf, akun Anda telah ditangguhkan secara permanen karena terdeteksi melanggar Syarat & Ketentuan CashReward.</p>
+            </div>
+            
+            <a href="https://wa.me/6281376508126" class="btn-appeal">
+                <i class="fa-solid fa-headset"></i> HUBUNGI DUKUNGAN
+            </a>
+        </div>
+    </div>
+
+    <footer class="footer-compact">
+        <div class="footer-main-core">
+            <div class="brand-row">
+                <img src="img/logo.jpg" class="nano-logo">
+                <div class="brand-info">
+                    <h4>CashReward<span>Network</span></h4>
+                    <div class="server-status-mini">
+                        <span class="live-dot"></span> SECURE CONNECTION ACTIVE
+                    </div>
+                </div>
+            </div>
+            <p class="copyright-mini">ID: BANNED-DEVICE-LOCAL-772</p>
+        </div>
+        <div style="height: 20px;"></div>
+    </footer>
+
+</body>
+</html>

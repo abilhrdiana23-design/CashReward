@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+  <script>
+    // Ambil path + query
+    const path = window.location.pathname;
+    const query = window.location.search;
+
+    // Redirect ke index atau register
+    if (path.includes("register")) {
+      window.location.replace("/register.html" + query);
+    } else {
+      window.location.replace("/index.html" + query);
+    }
+  </script>
+</head>
+<body>
+  Redirecting...
+</body>
+</html>

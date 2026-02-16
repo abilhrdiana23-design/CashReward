@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Admin - CashReward</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0b0f1a; --card: #151c2c; --primary: #4a8d88; --accent: #38bdf8; --danger: #ff4757; --success: #22c55e; --warning: #f59e0b; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; padding-bottom: 100px; }
+        
+        .admin-header { padding: 25px 5%; background: var(--card); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        
+        /* PRATINJAU KOTAK STATISTIK */
+        .stats-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px 5%; }
+        .stat-box { background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
+        .stat-box.wide { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #151c2c 0%, #1e293b 100%); border: 1px solid rgba(74, 141, 136, 0.2); }
+        .stat-box i { position: absolute; right: -10px; bottom: -10px; font-size: 50px; opacity: 0.05; color: white; }
+        .stat-box h2 { margin: 5px 0 0; font-size: 22px; font-weight: 800; }
+        .stat-box span { font-size: 10px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; }
+        
+        /* Menu Utama */
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 5% 20px; }
+        .menu-item { background: var(--card); padding: 18px 10px; border-radius: 20px; text-align: center; cursor: pointer; position: relative; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
+        .menu-item:active { transform: scale(0.95); }
+        .menu-item i { font-size: 20px; margin-bottom: 8px; display: block; }
+        .menu-item span { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #cbd5e1; }
+        .badge-count { position: absolute; top: 8px; right: 12px; background: var(--danger); color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 800; }
+        
+        /* Overlay & List */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 1000; display: none; flex-direction: column; }
+        .modal-head { padding: 20px 5%; background: var(--card); display: flex; align-items: center; gap: 20px; border-bottom: 1px solid #2d3748; }
+        .content-body { padding: 20px 5%; flex: 1; overflow-y: auto; }
+        .list-card { background: var(--card); padding: 15px; border-radius: 18px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .btn-mini { flex: 1; padding: 12px; border-radius: 10px; border: none; font-size: 11px; font-weight: 800; cursor: pointer; color: white; }
+        input, textarea { width: 100%; background: #0b0f1a; border: 1px solid #2d3748; padding: 15px; border-radius: 12px; color: white; margin-bottom: 10px; box-sizing: border-box; }
+        
+        /* Footer */
+        .footer-info { position: fixed; bottom: 0; width: 100%; background: #070a13; padding: 15px 5%; border-top: 1px solid #1e293b; z-index: 999; box-sizing: border-box;}
+        .info-flex { display: flex; justify-content: space-between; font-size: 9px; color: #475569; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-header">
+        <h1 style="color:var(--primary); margin:0; font-size: 20px; font-weight: 800;">MASTER DASHBOARD</h1>
+        <p id="adminEmail" style="font-size:11px; color:#64748b; margin: 5px 0 0;">Checking Admin...</p>
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-box wide">
+            <div>
+                <span>Total Member Registered</span>
+                <h2 id="viewUsers">0</h2>
+            </div>
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="stat-box">
+            <span>Pending WD</span>
+            <h2 id="viewWD" style="color:var(--danger)">0</h2>
+            <i class="fa-solid fa-money-bill"></i>
+        </div>
+        <div class="stat-box">
+            <span>Pending Depo</span>
+            <h2 id="viewDepo" style="color:var(--success)">0</h2>
+            <i class="fa-solid fa-wallet"></i>
+        </div>
+        <div class="stat-box">
+            <span>Pending Task</span>
+            <h2 id="viewTask" style="color:white">0</h2>
+            <i class="fa-solid fa-list-check"></i>
+        </div>
+        <div class="stat-box">
+            <span>Pending Advister</span>
+            <h2 id="viewAdv" style="color:var(--accent)">0</h2>
+            <i class="fa-solid fa-user-tie"></i>
+        </div>
+    </div>
+
+    <div class="menu-grid">
+        <div class="menu-item" onclick="openMenu('adv_queue')"><i class="fa-solid fa-rectangle-ad" style="color:var(--accent)"></i><span>Verif Iklan</span></div>
+        <div class="menu-item" onclick="openMenu('deposits')"><i class="fa-solid fa-wallet" style="color:var(--success)"></i><span>Verif Depo</span></div>
+        <div class="menu-item" onclick="openMenu('withdraws')"><i class="fa-solid fa-money-bill-transfer" style="color:var(--danger)"></i><span>Verif WD</span></div>
+        <div class="menu-item" onclick="openMenu('submissions')"><i class="fa-solid fa-tasks"></i><span>Verif Tugas</span></div>
+        <div class="menu-item" onclick="openMenu('subs_adv')"><i class="fa-solid fa-user-check" style="color:var(--accent)"></i><span>Verif Advister</span></div>
+        <div class="menu-item" onclick="openMenu('manage_tasks')"><i class="fa-solid fa-layer-group"></i><span>Kelola Tugas</span></div>
+        <div class="menu-item" onclick="openMenu('users')"><i class="fa-solid fa-users-gear"></i><span>Kelola User</span></div>
+        <div class="menu-item" onclick="openMenu('create')"><i class="fa-solid fa-plus-circle" style="color:var(--primary)"></i><span>Buat Tugas</span></div>
+        <div class="menu-item" onclick="openMenu('broadcast')" style="grid-column: span 2;"><i class="fa-solid fa-bullhorn" style="color:var(--accent)"></i><span>Broadcast Notifikasi</span></div>
+    </div>
+
+    <div id="modalOverlay" class="overlay">
+        <div class="modal-head">
+            <button onclick="closeMenu()" style="background:none; border:none; color:white; font-size:20px;"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3 id="modalTitle" style="margin:0; font-size: 15px;">Menu</h3>
+        </div>
+        <div class="content-body" id="modalContent"></div>
+    </div>
+
+    <div class="footer-info">
+        <div class="info-flex">
+            <div>FIREBASE: <span style="color:var(--success)">STABLE</span></div>
+            <div>STATUS: <span style="color:var(--accent)">READY TO WRITE</span></div>
+            <div>DB-V: 4.0.0</div>
+        </div>
+    </div>
+
+<script type="module">
+    import { db, auth } from './js/firebase-config.js';
+    import { collection, query, where, onSnapshot, doc, getDoc, getDocs, updateDoc, addDoc, deleteDoc, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    let currentMenu = "";
+
+    onAuthStateChanged(auth, async (u) => {
+        if (u) {
+            const s = await getDoc(doc(db, "users", u.uid));
+            if (s.exists() && s.data().isAdmin) { document.getElementById('adminEmail').innerText = "Authorized: " + u.email; }
+            else { window.location.href="dashboard.html"; }
+        } else { window.location.href="login.html"; }
+    });
+
+    // --- REALTIME MONITORING UNTUK KOTAK PRATINJAU ---
+    onSnapshot(collection(db, "users"), s => document.getElementById('viewUsers').innerText = s.size);
+    onSnapshot(query(collection(db, "withdrawals"), where("status", "==", "pending")), s => document.getElementById('viewWD').innerText = s.size);
+    onSnapshot(query(collection(db, "deposits"), where("status", "==", "pending")), s => document.getElementById('viewDepo').innerText = s.size);
+    onSnapshot(query(collection(db, "task_submissions"), where("status", "==", "pending")), s => document.getElementById('viewTask').innerText = s.size);
+    onSnapshot(query(collection(db, "adv_queue"), where("status", "==", "pending")), s => document.getElementById('viewAdv').innerText = s.size);
+
+    // --- FUNGSI OPEN MENU ---
+    window.openMenu = async (type) => {
+        currentMenu = type;
+        const content = document.getElementById('modalContent');
+        const title = document.getElementById('modalTitle');
+        document.getElementById('modalOverlay').style.display = 'flex';
+        content.innerHTML = "<center style='margin-top:50px'>Memuat Data...</center>";
+
+        if (type === 'adv_queue') {
+            title.innerText = "Verifikasi Iklan Baru";
+            const snap = await getDocs(query(collection(db, "adv_queue"), where("status", "==", "pending")));
+            renderList(snap, (d, id) => `
+                <div class="list-card">
+                    <b>${d.title}</b><br><small>${d.email}</small>
+                    <p style="font-size:11px; color:var(--accent)">Reward: Rp ${d.reward} | Kuota: ${d.quota}</p>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-mini" style="background:var(--danger)" onclick="processAdv('${id}','rej','${d.uid}',${d.totalPaid})">REJECT</button>
+                        <button class="btn-mini" style="background:var(--success)" onclick="processAdv('${id}','acc')">APPROVE</button>
+                    </div>
+                </div>`);
+        }
+        else if (type === 'deposits') {
+            title.innerText = "Verifikasi Deposit";
+            const snap = await getDocs(query(collection(db, "deposits"), where("status", "==", "pending")));
+            renderList(snap, (d, id) => `
+                <div class="list-card">
+                    <b>${d.email}</b><br>Rp ${d.amount.toLocaleString()}
+                    <img src="${d.proofImg}" style="width:100%; border-radius:12px; margin:10px 0;">
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-mini" style="background:var(--danger)" onclick="processGen('deposits','${id}','rej')">TOLAK</button>
+                        <button class="btn-mini" style="background:var(--success)" onclick="processGen('deposits','${id}','acc','${d.uid}',${d.amount})">ACC</button>
+                    </div>
+                </div>`);
+        }
+        else if (type === 'withdraws') {
+            title.innerText = "Verifikasi Penarikan (WD)";
+            const snap = await getDocs(query(collection(db, "withdrawals"), where("status", "==", "pending")));
+            renderList(snap, (d, id) => `
+                <div class="list-card">
+                    <b>${d.email}</b><br>${d.target} (${d.method})<br>Total: Rp ${d.amount.toLocaleString()}
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn-mini" style="background:var(--danger)" onclick="processGen('withdrawals','${id}','rej','${d.uid}',${d.amount})">REJECT</button>
+                        <button class="btn-mini" style="background:var(--success)" onclick="processGen('withdrawals','${id}','acc')">TF DONE</button>
+                    </div>
+                </div>`);
+        }
+        else if (type === 'submissions' || type === 'subs_adv') {
+            title.innerText = "Bukti Kerja";
+            const col = type === 'submissions' ? "task_submissions" : "task_submissions_adv";
+            const snap = await getDocs(query(collection(db, col), where("status", "==", "pending")));
+            renderList(snap, (d, id) => `
+                <div class="list-card">
+                    <b>${d.taskTitle}</b><br><small>${d.email}</small>
+                    <img src="${d.proofImg}" style="width:100%; border-radius:12px; margin:10px 0;">
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-mini" style="background:var(--danger)" onclick="processGen('${col}','${id}','rej')">REJECT</button>
+                        <button class="btn-mini" style="background:var(--success)" onclick="processGen('${col}','${id}','acc','${d.uid}',${d.reward})">APPROVE</button>
+                    </div>
+                </div>`);
+        }
+        else if (type === 'manage_tasks') {
+            title.innerText = "List Tugas Aktif";
+            const snap = await getDocs(collection(db, "tasks"));
+            renderList(snap, (d, id) => `
+                <div class="list-card">
+                    <b>${d.title}</b><br><small>Reward: ${d.reward} | Kuota: ${d.quota}</small>
+                    <button class="btn-mini" style="background:var(--danger); width:100%; margin-top:10px;" onclick="delTask('${id}')">HAPUS PERMANEN</button>
+                </div>`);
+        }
+        else if (type === 'users') {
+            title.innerText = "User Control";
+            content.innerHTML = `<input id="uK" placeholder="Email user..."><button onclick="searchU()" class="btn-mini" style="background:var(--primary); width:100%">CARI USER</button><div id="uR" style="margin-top:15px"></div>`;
+        }
+        else if (type === 'create') {
+            title.innerText = "Tambah Tugas";
+            content.innerHTML = `<input id="tT" placeholder="Judul"><input id="tL" placeholder="Link"><textarea id="tD" placeholder="Instruksi"></textarea><input id="tR" type="number" placeholder="Reward"><input id="tQ" type="number" placeholder="Kuota"><button onclick="saveT()" class="btn-mini" style="background:var(--primary); width:100%; height:50px;">PUBLIKASIKAN</button>`;
+        }
+        else if (type === 'broadcast') {
+            title.innerText = "Broadcasting";
+            content.innerHTML = `<input id="bcT" placeholder="Judul"><textarea id="bcM" placeholder="Isi Pesan"></textarea><button onclick="sendBC()" class="btn-mini" style="background:var(--accent); color:#000; width:100%; height:50px;">KIRIM BROADCAST</button>`;
+        }
+    };
+
+    // --- HELPER RENDER ---
+    function renderList(snap, template) {
+        const c = document.getElementById('modalContent');
+        if(snap.empty) { c.innerHTML = "<center style='margin-top:50px; color:#444;'>Tidak ada antrian</center>"; return; }
+        c.innerHTML = "";
+        snap.forEach(doc => c.innerHTML += template(doc.data(), doc.id));
+    }
+
+    // --- LOGIKA STAY ON PAGE ---
+    const refreshModal = () => openMenu(currentMenu);
+
+    window.processAdv = async (id, act, uid, refund) => {
+        if(!confirm("Proses iklan ini?")) return;
+        if(act === 'acc') {
+            const d = (await getDoc(doc(db, "adv_queue", id))).data();
+            await addDoc(collection(db, "tasks"), { ...d, status: "active", timestamp: serverTimestamp() });
+            await updateDoc(doc(db, "adv_queue", id), { status: "success" });
+        } else {
+            await updateDoc(doc(db, "users", uid), { balance: increment(Number(refund)) });
+            await updateDoc(doc(db, "adv_queue", id), { status: "rejected" });
+        }
+        refreshModal();
+    };
+
+    window.processGen = async (col, id, act, uid, amt) => {
+        if(!confirm("Lanjutkan?")) return;
+        if(act === 'acc') {
+            if(uid && amt && (col.includes('deposits') || col.includes('task_submissions'))) await updateDoc(doc(db, "users", uid), { balance: increment(Number(amt)) });
+            await updateDoc(doc(db, col, id), { status: 'success' });
+        } else {
+            if(col === 'withdrawals' && uid && amt) await updateDoc(doc(db, "users", uid), { balance: increment(Number(amt)) });
+            await updateDoc(doc(db, col, id), { status: 'rejected' });
+        }
+        refreshModal();
+    };
+
+    window.delTask = async (id) => { if(confirm("Hapus?")) { await deleteDoc(doc(db, "tasks", id)); refreshModal(); } };
+    
+    window.saveT = async () => {
+        await addDoc(collection(db, "tasks"), {
+            title: document.getElementById('tT').value, link: document.getElementById('tL').value,
+            description: document.getElementById('tD').value, reward: Number(document.getElementById('tR').value),
+            quota: Number(document.getElementById('tQ').value), status: "active", timestamp: serverTimestamp()
+        });
+        alert("Berhasil!"); closeMenu();
+    };
+
+    window.sendBC = async () => {
+        await addDoc(collection(db, "notifications"), { title: document.getElementById('bcT').value, message: document.getElementById('bcM').value, timestamp: serverTimestamp() });
+        alert("Broadcast Terkirim!"); closeMenu();
+    };
+
+    window.searchU = async () => {
+        const k = document.getElementById('uK').value.toLowerCase();
+        const r = document.getElementById('uR'); r.innerHTML = "Mencari...";
+        const snap = await getDocs(collection(db, "users"));
+        r.innerHTML = "";
+        snap.forEach(d => {
+            const u = d.data();
+            if(u.email?.includes(k)) {
+                r.innerHTML += `<div class="list-card"><b>${u.email}</b><br>Saldo: ${u.balance}<br><input type="number" id="a_${d.id}" placeholder="+/- Saldo"><button class="btn-mini" style="background:var(--primary); width:100%" onclick="adjB('${d.id}')">UPDATE SALDO</button><button class="btn-mini" style="background:var(--danger); width:100%; margin-top:5px;" onclick="togB('${d.id}',${u.status==='banned'})">${u.status==='banned'?'UNBAN USER':'BAN USER'}</button></div>`;
+            }
+        });
+    };
+
+    window.adjB = async (uid) => { await updateDoc(doc(db, "users", uid), { balance: increment(Number(document.getElementById('a_'+uid).value)) }); searchU(); };
+    window.togB = async (uid, isB) => { await updateDoc(doc(db, "users", uid), { status: isB?'active':'banned' }); searchU(); };
+    window.closeMenu = () => { document.getElementById('modalOverlay').style.display = 'none'; };
+</script>
+</body>
+</html>

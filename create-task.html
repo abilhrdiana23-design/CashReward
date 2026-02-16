@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Tugas - CashReward</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0b0f1a; --card: #151c2c; --primary: #4a8d88; --text-dim: #94a3b8; --danger: #ff4757; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; }
+
+        .header { padding: 20px 5%; display: flex; align-items: center; gap: 15px; background: var(--card); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 1000; }
+        .header a { color: white; text-decoration: none; width: 35px; height: 35px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; border-radius: 10px; }
+
+        .content { padding: 25px 5%; margin-bottom: 100px; position: relative; }
+        
+        /* --- STYLE LOCK SCREEN (BARU) --- */
+        #lockOverlay {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(21, 28, 44, 0.8);
+            border: 2px dashed rgba(255, 71, 87, 0.3);
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+        .lock-icon-circle {
+            width: 70px; height: 70px; background: rgba(255, 71, 87, 0.1); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            margin: 0 auto 20px; color: var(--danger); font-size: 30px;
+        }
+        /* -------------------------------- */
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; }
+        
+        input, textarea, select { width: 100%; padding: 16px; background: var(--card); border: 1px solid #2d3748; border-radius: 15px; color: white; outline: none; box-sizing: border-box; font-family: inherit; }
+        
+        .calc-box { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-top: 10px; }
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
+        .fee-text { color: #f59e0b; font-size: 12px; }
+        .total-price { border-top: 1px solid #2d3748; margin-top: 10px; padding-top: 10px; font-weight: 800; color: var(--primary); font-size: 18px; }
+
+        .btn-create { width: 100%; padding: 18px; background: var(--primary); border: none; border-radius: 16px; color: white; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 25px; }
+        .btn-create:disabled { background: #2d3748; color: #64748b; cursor: not-allowed; }
+
+        footer { background: var(--card); padding: 40px 5% 100px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-content { text-align: center; }
+        .footer-content b { font-size: 18px; color: var(--primary); display: block; margin-bottom: 10px; }
+        .footer-links { margin: 20px 0; display: flex; justify-content: center; gap: 20px; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="dashboard.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <h2 style="margin:0; font-size:16px;">Buat Iklan Baru</h2>
+    </div>
+
+    <div class="content">
+        
+        <div id="lockOverlay">
+            <div class="lock-icon-circle"><i class="fa-solid fa-lock"></i></div>
+            <h3 style="margin: 0 0 10px; font-weight: 800;">Fitur Terkunci</h3>
+            <p style="color: var(--text-dim); font-size: 13px; line-height: 1.6; margin: 0 0 20px;">
+                Maaf, Anda wajib memiliki saldo minimal <b style="color: white;">Rp 30.000</b> untuk menggunakan fitur pasang iklan.
+            </p>
+            <button onclick="window.location.href='deposit.html'" style="background: var(--danger); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer;">
+                <i class="fa-solid fa-wallet"></i> ISI SALDO SEKARANG
+            </button>
+        </div>
+
+        <div id="mainForm">
+            <div class="form-group">
+                <label>JUDUL TUGAS</label>
+                <input type="text" id="taskTitle" placeholder="Misal: Follow Instagram Saya">
+            </div>
+
+            <div class="form-group">
+                <label>LINK TARGET</label>
+                <input type="url" id="taskLink" placeholder="https://instagram.com/user">
+            </div>
+
+            <div class="form-group">
+                <label>INSTRUKSI SINGKAT</label>
+                <textarea id="taskDesc" rows="3" placeholder="Apa yang harus dilakukan user?"></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label>REWARD (RP)</label>
+                    <input type="number" id="taskReward" value="1000">
+                </div>
+                <div class="form-group">
+                    <label>KUOTA</label>
+                    <input type="number" id="taskQuota" value="10">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>BATAS PENGERJAAN</label>
+                <select id="taskLimit">
+                    <option value="once">Sekali per User</option>
+                    <option value="unlimited">Boleh Berulang kali</option>
+                </select>
+            </div>
+
+            <div class="calc-box">
+                <div class="calc-row"><span>Biaya Tugas</span> <span id="baseCost">Rp 0</span></div>
+                <div class="calc-row fee-text"><span>Pajak & Fee Web (45%)</span> <span id="feeCost">Rp 0</span></div>
+                <div class="calc-row total-price"><span>Total Bayar</span> <span id="totalCost">Rp 0</span></div>
+            </div>
+
+            <button class="btn-create" id="btnSubmit" onclick="createTask()">KIRIM KE ADMIN</button>
+            <p style="text-align:center; font-size:12px; color:var(--text-dim); margin-top:15px;">Saldo Anda: <b id="userBalance">Rp 0</b></p>
+        </div>
+    </div>
+
+    <footer style="margin-top: 0.1px; padding: 30px 6%; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05);">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+            <div style="background: var(--card); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);">
+                <i class="fa-solid fa-bolt" style="color: #ffd700; margin-bottom: 10px;"></i>
+                <h5 style="margin: 0; font-size: 12px; color: white;">Cepat & Real</h5>
+                <p style="margin: 5px 0 0 0; font-size: 10px; color: var(--text-dim);">Tugas diproses oleh user asli.</p>
+            </div>
+            <div style="background: var(--card); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);">
+                <i class="fa-solid fa-circle-exclamation" style="color: var(--primary); margin-bottom: 10px;"></i>
+                <h5 style="margin: 0; font-size: 12px; color: white;">Sistem Validasi</h5>
+                <p style="margin: 5px 0 0 0; font-size: 10px; color: var(--text-dim);">Admin memverifikasi setiap bukti kerja.</p>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <img src="img/logo.jpg" style="width: 35px; border-radius: 8px; margin-bottom: 10px; opacity: 0.7;">
+            <p style="font-size: 10px; color: var(--text-dim); margin: 0;">© 2025-2026 CashReward Ads Manager</p>
+        </div>
+    </footer>
+
+<script type="module">
+    import { db, auth } from './js/firebase-config.js';
+    import { doc, getDoc, addDoc, collection, serverTimestamp, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const rInp = document.getElementById('taskReward');
+    const qInp = document.getElementById('taskQuota');
+    const MIN_LIMIT = 30000; // SYARAT MINIMAL 30K
+    let currentBalance = 0;
+
+    function updateCost() {
+        const reward = parseInt(rInp.value) || 0;
+        const quota = parseInt(qInp.value) || 0;
+        const base = reward * quota;
+        const fee = Math.ceil(base * 0.45);
+        const total = base + fee;
+        document.getElementById('baseCost').innerText = "Rp " + base.toLocaleString();
+        document.getElementById('feeCost').innerText = "+ Rp " + fee.toLocaleString();
+        document.getElementById('totalCost').innerText = "Rp " + total.toLocaleString();
+        return total;
+    }
+
+    rInp.oninput = updateCost;
+    qInp.oninput = updateCost;
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const uSnap = await getDoc(doc(db, "users", user.uid));
+            if (uSnap.exists()) {
+                currentBalance = uSnap.data().balance || 0;
+                document.getElementById('userBalance').innerText = "Rp " + currentBalance.toLocaleString();
+                
+                // LOGIKA LOCK SCREEN (BARU)
+                if (currentBalance < MIN_LIMIT) {
+                    document.getElementById('lockOverlay').style.display = 'block';
+                    document.getElementById('mainForm').style.opacity = '0.2';
+                    document.getElementById('mainForm').style.pointerEvents = 'none';
+                    document.getElementById('btnSubmit').disabled = true;
+                }
+                updateCost();
+            }
+        } else { window.location.href = "login.html"; }
+    });
+
+    window.createTask = async () => {
+        const totalPaid = updateCost();
+        const title = document.getElementById('taskTitle').value;
+        const link = document.getElementById('taskLink').value;
+        const desc = document.getElementById('taskDesc').value;
+        const limitType = document.getElementById('taskLimit').value;
+
+        if(!title || !link || !desc) return alert("Lengkapi data!");
+        if (currentBalance < MIN_LIMIT) return alert("Anda wajib memiliki saldo minimal Rp 30.000!");
+        if (currentBalance < totalPaid) return alert("Saldo tidak cukup untuk biaya iklan ini!");
+
+        if(confirm(`Kirim iklan? Total potong saldo: Rp ${totalPaid.toLocaleString()}`)) {
+            try {
+                await updateDoc(doc(db, "users", auth.currentUser.uid), { balance: increment(-totalPaid) });
+                await addDoc(collection(db, "adv_queue"), {
+                    title, link, description: desc,
+                    quota: parseInt(qInp.value),
+                    reward: parseInt(rInp.value),
+                    limitType, totalPaid,
+                    uid: auth.currentUser.uid,
+                    email: auth.currentUser.email,
+                    status: "pending", timestamp: serverTimestamp()
+                });
+                alert("Berhasil dikirim ke Admin!");
+                window.location.href = "dashboard.html";
+            } catch(e) { alert(e.message); }
+        }
+    };
+</script>
+</body>
+</html>
