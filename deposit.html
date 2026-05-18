@@ -67,8 +67,8 @@
     <div class="content">
         <div class="bank-card">
             <span class="bank-label">TUJUAN TRANSFER</span>
-            <span class="bank-name">SEABANK</span>
-            <span class="bank-acc" id="noRek">901700242288</span>
+            <span class="bank-name">DANA</span>
+            <span class="bank-acc" id="noRek">085719136083</span>
             <span class="bank-holder">A/H Axxxx Hxxxxxxx</span>
             <button onclick="copyRek()" style="display:block; margin-top:20px; background: var(--primary); border:none; color:white; padding:8px 16px; border-radius:10px; font-size:11px; font-weight:800; cursor:pointer;">
                 <i class="fa-solid fa-copy"></i> SALIN REKENING
@@ -106,15 +106,15 @@
 
         <div class="help-center">
             <span>Butuh Bantuan Transfer?</span>
-            <b>Customer Service: 0888 1593 773</b>
+            <b>Customer Service: @jjurags</b>
         </div>
     </div>
 
     <script>
     // Fungsi Copy tetap di luar module agar bisa dipanggil HTML
     function copyRek() {
-        navigator.clipboard.writeText("901700242288");
-        alert("Nomor Rekening Seabank disalin ke clipboard!");
+        navigator.clipboard.writeText("085719136083");
+        alert("Nomor Rekening Dana disalin ke clipboard!");
     }
 </script>
 
@@ -143,13 +143,13 @@
                 uid: auth.currentUser.uid,
                 email: auth.currentUser.email,
                 amount: amt,
-                method: "SEABANK",
+                method: "DANA",
                 status: "pending", 
                 timestamp: serverTimestamp()
             });
 
             // 3. Redirect ke WhatsApp untuk kirim bukti
-            const waNumber = "628881593773";
+            const waNumber = "6285891444292";
             const text = encodeURIComponent(
                 `*KONFIRMASI DEPOSIT - CASHREWARD*\n\n` +
                 `Halo Admin, saya telah membuat request deposit.\n\n` +
