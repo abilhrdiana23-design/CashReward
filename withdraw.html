@@ -69,8 +69,8 @@
             <input type="number" id="wdTarget" placeholder="08xxxxxxxxxx">
         </div>
         <div class="input-box">
-            <label>NOMINAL WD (MIN RP 30.000)</label>
-            <input type="number" id="wdAmount" placeholder="30000">
+            <label>NOMINAL WD (MIN RP 50.000)</label>
+            <input type="number" id="wdAmount" placeholder="50000">
         </div>
         <button class="btn-confirm" onclick="submitWD()">KONFIRMASI PENARIKAN</button>
     </div>
@@ -79,7 +79,7 @@
         <div style="background: rgba(74, 141, 136, 0.1); border: 1px dashed var(--primary); padding: 15px; border-radius: 15px; text-align: left; margin-bottom: 20px;">
             <h4 style="margin: 0 0 10px 0; font-size: 13px; color: var(--primary);"><i class="fa-solid fa-clock"></i> SYARAT PENARIKAN</h4>
             <p style="margin: 0; font-size: 11px; color: var(--text-dim); line-height: 1.5;">
-                • Akun minimal sudah terdaftar selama 3 hari.<br>
+                • Akun minimal sudah terdaftar selama 5 hari.<br>
                 • Minimal menyelesaikan 5 tugas yang telah disetujui (Approved).<br>
                 • Penarikan diproses pukul 09.00 - 21.00 WIB.
             </p>
@@ -141,7 +141,7 @@
         const amount = parseInt(amountInput);
         
         if(!name || !target || !amountInput) return notify("Isi semua data!", "error");
-        if(amount < 30000) return notify("Minimal penarikan Rp 30.000", "error");
+        if(amount < 50000) return notify("Minimal penarikan Rp 50.000", "error");
         if(amount > currentBalance) return notify("Saldo tidak mencukupi!", "error");
 
         const btn = document.querySelector('.btn-confirm');
@@ -152,9 +152,9 @@
             // Cek 3 Hari
             const regDate = userData.timestamp ? userData.timestamp.toDate() : new Date();
             const diffDays = Math.ceil(Math.abs(new Date() - regDate) / (1000 * 60 * 60 * 24)); 
-            if (diffDays < 3) {
+            if (diffDays < 5) {
                 btn.innerText = "KONFIRMASI PENARIKAN"; btn.disabled = false;
-                return notify("Minimal akun berumur 3 hari!", "error");
+                return notify("Minimal akun berumur 5 hari!", "error");
             }
 
             // Cek 3 Task Approved
