@@ -2,16 +2,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
 
 :root {
-    /* Palet Warna Mewah */
-    --primary-color: #4a8d88;      /* Deep Teal */
-    --primary-dark: #356662;
-    --accent-gold: #c5a059;       /* Muted Gold untuk kesan mahal */
-    --text-main: #2d3436;
-    --text-muted: #636e72;
-    --bg-body: #fdfdfd;           /* Off-white yang bersih */
+    /* --- PALET WARNA BARU (UNGU, HITAM, HIJAU ONLINE) --- */
+    --primary-color: #6c5ce7;      /* Deep Purple / Royal Violet */
+    --primary-dark: #5b4bc4;       /* Darker Purple untuk Hover */
+    --accent-green: #00b894;       /* Online Green / Emerald Accent */
+    --accent-green-glow: rgba(0, 184, 148, 0.25);
+    
+    /* Neutral & Backgrounds */
+    --bg-body: #0f0f13;            /* Rich Dark/Hitam Elegan */
+    --card-bg: #181820;            /* Surface Dark Card */
+    --card-border: rgba(255, 255, 255, 0.08);
     --white: #ffffff;
-    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    --text-main: #f1f2f6;          /* Off-white untuk teks utama */
+    --text-muted: #a4b0be;         /* Muted grey untuk subtitle */
+    
+    /* Shadows & Effects */
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --glass-shadow: 0 8px 32px 0 rgba(108, 92, 231, 0.15);
     --radius-lg: 20px;
     --radius-md: 12px;
     --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -22,7 +29,7 @@
 }
 
 body {
-    font-family: 'Outfit', sans-serif; /* Font lebih modern & elegan */
+    font-family: 'Outfit', sans-serif;
     background-color: var(--bg-body);
     color: var(--text-main);
     line-height: 1.6;
@@ -35,15 +42,15 @@ body {
     padding: 0 24px;
 }
 
-/* --- NAVIGATION (CLEAN & MINIMALIST) --- */
+/* --- NAVIGATION (DARK GLASSMORPHISM) --- */
 .navbar {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px); /* Efek kaca transparan profesional */
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(24, 24, 32, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     position: fixed;
     top: 0; width: 100%;
     z-index: 2000;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--card-border);
 }
 
 .navbar .container {
@@ -67,13 +74,13 @@ body {
 }
 
 .nav-menu a:hover, .nav-menu a.active {
-    color: var(--primary-color);
+    color: var(--accent-green);
 }
 
 /* --- DASHBOARD COMPONENTS --- */
 .dashboard { padding: 120px 0 60px; }
 
-/* Balance Cards (Grid Mewah) */
+/* Balance Cards */
 .balance-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -81,19 +88,30 @@ body {
 }
 
 .balance-card {
-    background: var(--white);
+    background: var(--card-bg);
     padding: 25px;
     border-radius: var(--radius-lg);
     box-shadow: var(--card-shadow);
-    border: 1px solid rgba(0,0,0,0.02);
+    border: 1px solid var(--card-border);
     transition: var(--transition);
 }
 
-.balance-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+.balance-card:hover { 
+    transform: translateY(-5px); 
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 35px rgba(108, 92, 231, 0.2); 
+}
 
 .balance-card h3 { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
-.balance-amount { font-size: 24px; font-weight: 700; margin-top: 10px; color: var(--primary-color); }
+/* Menggunakan Warna Hijau Online untuk Angka Saldo */
+.balance-amount { 
+    font-size: 24px; 
+    font-weight: 700; 
+    margin-top: 10px; 
+    color: var(--accent-green); 
+    text-shadow: 0 0 12px var(--accent-green-glow);
+}
 
 /* Quick Actions Grid */
 .dashboard-menu {
@@ -103,7 +121,7 @@ body {
 }
 
 .menu-item {
-    background: var(--white);
+    background: var(--card-bg);
     padding: 20px 10px;
     border-radius: var(--radius-md);
     text-align: center;
@@ -111,12 +129,12 @@ body {
     color: var(--text-main);
     box-shadow: var(--card-shadow);
     transition: var(--transition);
-    border: 1px solid transparent;
+    border: 1px solid var(--card-border);
 }
 
 .menu-item:hover {
     border-color: var(--primary-color);
-    background: #f4f9f8;
+    background: rgba(108, 92, 231, 0.1);
 }
 
 .menu-item i {
@@ -128,10 +146,11 @@ body {
 
 /* --- TABLES & LISTS --- */
 .table-container {
-    background: var(--white);
+    background: var(--card-bg);
     padding: 30px;
     border-radius: var(--radius-lg);
     box-shadow: var(--card-shadow);
+    border: 1px solid var(--card-border);
     margin-top: 30px;
 }
 
@@ -142,20 +161,36 @@ body {
 .data-table th {
     text-align: left; padding: 15px;
     font-size: 13px; color: var(--text-muted);
-    border-bottom: 2px solid #f8f9fa;
+    border-bottom: 2px solid rgba(255,255,255,0.05);
 }
 
-.data-table td { padding: 15px; border-bottom: 1px solid #f8f9fa; font-size: 14px; }
+.data-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
 
+/* Status Indicators */
 .status {
     padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
 }
 
-.status-approved { background: #e3f9e5; color: #1f7a33; }
-.status-pending { background: #fff4e5; color: #b0711a; }
-.status-rejected { background: #ffe5e5; color: #cf2222; }
+/* Status Approved menggunakan warna Hijau Online */
+.status-approved { 
+    background: rgba(0, 184, 148, 0.15); 
+    color: var(--accent-green); 
+    border: 1px solid rgba(0, 184, 148, 0.3);
+}
 
-/* --- BUTTONS (ELEGANT STYLE) --- */
+.status-pending { 
+    background: rgba(253, 203, 110, 0.15); 
+    color: #ffeaa7; 
+    border: 1px solid rgba(253, 203, 110, 0.3);
+}
+
+.status-rejected { 
+    background: rgba(255, 118, 117, 0.15); 
+    color: #ff7675; 
+    border: 1px solid rgba(255, 118, 117, 0.3);
+}
+
+/* --- BUTTONS --- */
 .btn-primary {
     background: var(--primary-color);
     color: var(--white);
@@ -165,17 +200,22 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: 0 4px 15px rgba(74, 141, 136, 0.2);
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(74, 141, 136, 0.3);
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.5);
 }
 
 /* --- LEADERBOARD SPECIFIC --- */
-.leaderboard-rank-1 { border: 2px solid var(--accent-gold) !important; position: relative; }
+.leaderboard-rank-1 { 
+    border: 2px solid var(--accent-green) !important; 
+    position: relative; 
+    box-shadow: 0 0 15px var(--accent-green-glow);
+}
+
 .leaderboard-rank-1::after {
     content: '🏆'; position: absolute; top: -15px; right: -10px; font-size: 20px;
 }
@@ -183,14 +223,15 @@ body {
 /* --- MODAL STYLE --- */
 .modal {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center;
-    z-index: 3000; backdrop-filter: blur(5px);
+    background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center;
+    z-index: 3000; backdrop-filter: blur(8px);
 }
 
 .modal-content {
-    background: var(--white);
+    background: var(--card-bg);
     width: 90%; max-width: 450px;
     border-radius: var(--radius-lg);
+    border: 1px solid var(--card-border);
     padding: 0; overflow: hidden;
     animation: modalSlide 0.4s ease-out;
 }
@@ -205,76 +246,84 @@ body {
     padding: 20px; display: flex; justify-content: space-between; align-items: center;
 }
 
-/* --- MOBILE RESPONSIVE --- */
-@media (max-width: 768px) {
-    .nav-menu {
-        display: none; /* Mobile menu logic handled by main.js active class */
-        position: absolute; top: 70px; left: 0; width: 100%;
-        background: var(--white); flex-direction: column;
-        padding: 30px; gap: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    }
-    
-    .nav-menu.active { display: flex; }
-    .hamburger { display: block; background: none; border: none; font-size: 24px; cursor: pointer; }
-    
-    .balance-cards { grid-template-columns: 1fr; }
-    .dashboard-menu { grid-template-columns: repeat(3, 1fr); }
-}
+/* --- BRAND LOGO --- */
 .brand-logo {
     width: 65px; 
     height: 65px; 
-    background: transparent; /* Hilangkan background warna karena sudah ada gambar */
+    background: transparent;
     border-radius: 18px;
     display: flex; 
     align-items: center; 
     justify-content: center;
-    overflow: hidden; /* Penting: agar gambar tidak keluar dari kotak */
+    overflow: hidden;
     margin: 0 auto 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* Tambah bayangan halus agar mewah */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    border: 1px solid var(--card-border);
 }
 
 .brand-logo img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ini rahasianya supaya gambar otomatis menyesuaikan kotak tanpa gepeng */
+    object-fit: cover;
 }
-/* Container Testimoni */
+
+/* --- TESTIMONIALS --- */
 .testimonials {
     padding: 60px 0;
     overflow: hidden;
-    background: rgba(255,255,255,0.01);
+    background: transparent;
 }
 
 .testimonial-track {
     display: flex;
-    width: calc(250px * 10); /* Sesuaikan jumlah slide */
+    width: calc(250px * 10);
     animation: scroll 30s linear infinite;
     gap: 20px;
 }
 
 .testi-card {
     width: 250px;
-    background: var(--card);
+    background: var(--card-bg);
     padding: 20px;
     border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
     flex-shrink: 0;
 }
 
 .testi-card p {
     font-size: 13px;
-    color: #94a3b8;
+    color: var(--text-muted);
     line-height: 1.5;
     font-style: italic;
     margin-bottom: 15px;
 }
 
 .user-info { display: flex; align-items: center; gap: 10px; }
-.user-info img { width: 35px; height: 35px; border-radius: 50%; background: #444; }
-.user-info b { font-size: 12px; color: white; display: block; }
-.user-info span { font-size: 10px; color: var(--primary); }
+.user-info img { width: 35px; height: 35px; border-radius: 50%; background: #333; }
+.user-info b { font-size: 12px; color: var(--white); display: block; }
+
+/* Subtitle testimoni menggunakan Aksen Hijau Online */
+.user-info span { font-size: 10px; color: var(--accent-green); }
 
 @keyframes scroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-250px * 5)); } /* Geser sejauh setengah jumlah card */
+    100% { transform: translateX(calc(-250px * 5)); }
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        position: absolute; top: 70px; left: 0; width: 100%;
+        background: var(--card-bg); flex-direction: column;
+        padding: 30px; gap: 20px; 
+        box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        border-bottom: 1px solid var(--card-border);
+    }
+    
+    .nav-menu.active { display: flex; }
+    .hamburger { display: block; background: none; border: none; font-size: 24px; color: var(--text-main); cursor: pointer; }
+    
+    .balance-cards { grid-template-columns: 1fr; }
+    .dashboard-menu { grid-template-columns: repeat(3, 1fr); }
 }
