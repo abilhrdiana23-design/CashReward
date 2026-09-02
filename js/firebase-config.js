@@ -7,12 +7,12 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase
 
 // Your Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC1LTeVKZGUbBHq8iXxOX-OVcp1iMG64y0",
-  authDomain: "cash-reward-2fcb1.firebaseapp.com",
-  projectId: "cash-reward-2fcb1",
-  storageBucket: "cash-reward-2fcb1.firebasestorage.app",
-  messagingSenderId: "254447222132",
-  appId: "1:254447222132:web:058304f9b4deeb4c8b4021"
+  apiKey: "AIzaSyAK_m986n8_RflhMKgquEZSeTcc7EM3Zlk",
+  authDomain: "dompetku-3ca75.firebaseapp.com",
+  projectId: "dompetku-3ca75",
+  storageBucket: "dompetku-3ca75.firebasestorage.app",
+  messagingSenderId: "414654550059",
+  appId: "1:414654550059:web:846d1da727c61c957dda6e"
 };
 
 // Initialize Firebase
