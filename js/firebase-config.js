@@ -7,12 +7,12 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase
 
 // Your Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAK_m986n8_RflhMKgquEZSeTcc7EM3Zlk",
-  authDomain: "dompetku-3ca75.firebaseapp.com",
-  projectId: "dompetku-3ca75",
-  storageBucket: "dompetku-3ca75.firebasestorage.app",
-  messagingSenderId: "414654550059",
-  appId: "1:414654550059:web:846d1da727c61c957dda6e"
+  apiKey: "AIzaSyDQRkKtCaoOVqiYg-gpfadYdju7SL-40pI",
+  authDomain: "quicktaks-web-92f51.firebaseapp.com",
+  projectId: "quicktaks-web-92f51",
+  storageBucket: "quicktaks-web-92f51.firebasestorage.app",
+  messagingSenderId: "241203307508",
+  appId: "1:241203307508:web:1074174a384c20e6a40fa1"
 };
 
 // Initialize Firebase
